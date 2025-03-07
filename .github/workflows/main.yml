@@ -25,7 +25,9 @@ jobs:
                 run: pnpm run build
 
             - name: Upload to S3
-              run: aws s3 sync ./dist s3://legacy.reinisch.io
+              run: |
+                  aws s3 sync ./dist s3://legacy.reinisch.io
+                  aws cloudfront create-invalidation --distribution-id E2MEZZMMO9W01C --paths "/*"
               env:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
